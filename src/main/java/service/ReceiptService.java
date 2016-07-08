@@ -3,26 +3,14 @@ package service;
 import model.Product;
 import model.Receipt;
 
-public class ReceiptService {
-    private Receipt receipt;
+public interface ReceiptService {
+    void createNewReceiptIfNotExist();
 
-    public void createNewReceiptIfNotExist(){
-        receipt=new Receipt();
-    }
+    void deleteReceipt();
 
-    public void deleteReceipt(){
-        receipt=null;
-    }
+    Receipt getReceipt();
 
-    public Receipt getReceipt(){
-        return receipt;
-    }
+    boolean isReceiptAlreadyExist();
 
-    public boolean isReceiptAlreadyExist(){
-        return receipt!=null;
-    }
-
-    public void addProductToReceipt(Product product){
-        receipt.addProduct(product);
-    }
+    void addProductToReceipt(Product product);
 }

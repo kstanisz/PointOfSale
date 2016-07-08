@@ -7,7 +7,7 @@ import model.Product;
 import model.Receipt;
 import repository.ProductRepository;
 
-public class PointOfSale {
+public class PointOfSaleServiceImpl implements PointOfSaleService {
     private BarcodeScanner barcodeScanner;
     private Display display;
     private Printer printer;
@@ -18,7 +18,7 @@ public class PointOfSale {
     private final String INVALID_BARCODE = "Invalid bar-code";
     private final String PRODUCT_NOT_FOUNT = "Product not found";
 
-    PointOfSale(BarcodeScanner barcodeScanner, Display display, Printer printer, ProductRepository productRepository, ReceiptService receiptService) {
+    PointOfSaleServiceImpl(BarcodeScanner barcodeScanner, Display display, Printer printer, ProductRepository productRepository, ReceiptService receiptService) {
         this.barcodeScanner = barcodeScanner;
         this.display = display;
         this.printer = printer;
@@ -26,6 +26,7 @@ public class PointOfSale {
         this.receiptService = receiptService;
     }
 
+    @Override
     public void scanProduct() {
         receiptService.createNewReceiptIfNotExist();
         String barcode = barcodeScanner.scanProductAndGetBarcode();
@@ -41,6 +42,7 @@ public class PointOfSale {
         }
     }
 
+    @Override
     public void readInputMessage(String inputMessage) {
         if (inputMessage.equals(EXIT_MESSAGE)) {
             printReceiptAndDisplayTotalPrice();
@@ -49,8 +51,8 @@ public class PointOfSale {
     }
 
     private void printReceiptAndDisplayTotalPrice() {
-        if(receiptService.isReceiptAlreadyExist()){
-            Receipt receipt=receiptService.getReceipt();
+        if (receiptService.isReceiptAlreadyExist()) {
+            Receipt receipt = receiptService.getReceipt();
             printer.printReceipt(receipt);
             display.printTotalPrice(receipt.getTotalPrice());
         }
