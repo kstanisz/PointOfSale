@@ -12,41 +12,47 @@ public class PointOfSale {
     private Display display;
     private Printer printer;
     private ProductRepository productRepository;
-
-    private Receipt receipt;
+    private ReceiptService receiptService;
 
     private final String EXIT_MESSAGE = "exit";
     private final String INVALID_BARCODE = "Invalid bar-code";
     private final String PRODUCT_NOT_FOUNT = "Product not found";
 
-    PointOfSale(BarcodeScanner barcodeScanner, Display display, Printer printer, ProductRepository productRepository) {
+    PointOfSale(BarcodeScanner barcodeScanner, Display display, Printer printer, ProductRepository productRepository, ReceiptService receiptService) {
         this.barcodeScanner = barcodeScanner;
         this.display = display;
         this.printer = printer;
         this.productRepository = productRepository;
+        this.receiptService = receiptService;
     }
 
     public void scanProduct() {
-        if (receipt == null)
-            receipt = new Receipt();
-
+        receiptService.createNewReceiptIfNotExist();
         String barcode = barcodeScanner.scanProductAndGetBarcode();
-        if (barcode == null || barcode.isEmpty())
+        if (barcode == null || barcode.isEmpty()) {
             display.printMessage(INVALID_BARCODE);
-        Product product = productRepository.findProductByBarcode(barcode);
-        if (product != null) {
-            receipt.addProduct(product);
-            display.printMessage(product.toString());
-        } else
-            display.printMessage(PRODUCT_NOT_FOUNT);
+        } else {
+            Product product = productRepository.findProductByBarcode(barcode);
+            if (product != null) {
+                receiptService.addProductToReceipt(product);
+                display.printProductNameAndPrice(product);
+            } else
+                display.printMessage(PRODUCT_NOT_FOUNT);
+        }
     }
 
     public void readInputMessage(String inputMessage) {
-        if (inputMessage.equals(EXIT_MESSAGE))
-            printReceipt();
+        if (inputMessage.equals(EXIT_MESSAGE)) {
+            printReceiptAndDisplayTotalPrice();
+            receiptService.deleteReceipt();
+        }
     }
 
-    public void printReceipt() {
-        printer.printReceipt(receipt);
+    private void printReceiptAndDisplayTotalPrice() {
+        if(receiptService.isReceiptAlreadyExist()){
+            Receipt receipt=receiptService.getReceipt();
+            printer.printReceipt(receipt);
+            display.printTotalPrice(receipt.getTotalPrice());
+        }
     }
 }
