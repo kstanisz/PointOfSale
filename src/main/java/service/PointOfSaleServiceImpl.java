@@ -30,16 +30,19 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
     public void scanProduct() {
         receiptService.createNewReceiptIfNotExist();
         String barcode = barcodeScanner.scanProductAndGetBarcode();
-        if (barcode == null || barcode.isEmpty()) {
+        if (barcode == null || barcode.isEmpty())
             display.printMessage(INVALID_BARCODE);
-        } else {
-            Product product = productRepository.findProductByBarcode(barcode);
-            if (product != null) {
-                receiptService.addProductToReceipt(product);
-                display.printProductNameAndPrice(product);
-            } else
-                display.printMessage(PRODUCT_NOT_FOUNT);
-        }
+        else
+            findProductByBarcodeAndAddToReceipt(barcode);
+    }
+
+    private void findProductByBarcodeAndAddToReceipt(String barcode) {
+        Product product = productRepository.findProductByBarcode(barcode);
+        if (product != null) {
+            receiptService.addProductToReceipt(product);
+            display.printProductNameAndPrice(product);
+        } else
+            display.printMessage(PRODUCT_NOT_FOUNT);
     }
 
     @Override
