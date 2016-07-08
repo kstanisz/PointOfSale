@@ -1,5 +1,7 @@
 package device;
 
+import model.Receipt;
+
 public interface Printer {
-    void printReceipt(String receipt);
+    void printReceipt(Receipt receipt);
 }
