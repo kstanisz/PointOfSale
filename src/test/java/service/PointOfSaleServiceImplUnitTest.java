@@ -11,7 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import repository.ProductRepository;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PointOfSaleServiceImplUnitTests {
+public class PointOfSaleServiceImplUnitTest {
     @Mock
     private BarcodeScanner barcodeScanner;
     @Mock
@@ -30,6 +30,5 @@ public class PointOfSaleServiceImplUnitTests {
 
     @Test
     public void testScanProduct(){
-
     }
 }
