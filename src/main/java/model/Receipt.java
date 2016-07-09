@@ -2,17 +2,34 @@ package model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Receipt {
     private BigDecimal totalPrice = BigDecimal.ZERO;
-    private ArrayList<Product> products = new ArrayList<>();
+    private List<Product> productList = new ArrayList<>();
 
-    public BigDecimal getTotalPrice(){
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
+    public List<Product> getProductList() {
+        return productList;
+    }
+
     public void addProduct(Product product) {
-        products.add(product);
+        productList.add(product);
         totalPrice = totalPrice.add(product.getPrice());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null)
+            return false;
+        if (other == this)
+            return true;
+        if (!(other instanceof Receipt))
+            return false;
+        Receipt otherReceipt = (Receipt) other;
+        return (this.totalPrice.equals(otherReceipt.getTotalPrice()) && this.productList.equals(otherReceipt.getProductList()));
     }
 }

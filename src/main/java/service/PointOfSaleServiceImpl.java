@@ -28,7 +28,6 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
 
     @Override
     public void scanProduct() {
-        receiptService.createNewReceiptIfNotExist();
         String barcode = barcodeScanner.scanProductAndGetBarcode();
         if (barcode == null || barcode.isEmpty())
             display.printMessage(INVALID_BARCODE);
@@ -37,6 +36,7 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
     }
 
     private void findProductByBarcodeAndAddToReceipt(String barcode) {
+        receiptService.createNewReceiptIfNotExist();
         Product product = productRepository.findProductByBarcode(barcode);
         if (product != null) {
             receiptService.addProductToReceipt(product);

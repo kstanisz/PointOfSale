@@ -5,6 +5,7 @@ import device.Display;
 import device.Printer;
 import model.Product;
 import model.Receipt;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,6 +77,10 @@ public class PointOfSaleServiceImplUnitTest {
         pointOfSaleService.scanProduct();
         Mockito.verify(barcodeScanner).scanProductAndGetBarcode();
         Mockito.verify(display).printProductNameAndPrice(productsInDatabase[0]);
+
+        Receipt receipt= new Receipt();
+        receipt.addProduct(productsInDatabase[0]);
+        Assert.assertEquals(receipt,receiptService.getReceipt());
     }
 
     @Test
@@ -84,6 +89,9 @@ public class PointOfSaleServiceImplUnitTest {
         pointOfSaleService.scanProduct();
         Mockito.verify(barcodeScanner).scanProductAndGetBarcode();
         Mockito.verify(display).printMessage(PointOfSaleServiceImpl.PRODUCT_NOT_FOUND);
+
+        Receipt receipt= new Receipt();
+        Assert.assertEquals(receipt,receiptService.getReceipt());
     }
 
     @Test
@@ -92,6 +100,7 @@ public class PointOfSaleServiceImplUnitTest {
         pointOfSaleService.scanProduct();
         Mockito.verify(barcodeScanner).scanProductAndGetBarcode();
         Mockito.verify(display).printMessage(PointOfSaleServiceImpl.INVALID_BARCODE);
+        Assert.assertNull(receiptService.getReceipt());
     }
 
     @Test
