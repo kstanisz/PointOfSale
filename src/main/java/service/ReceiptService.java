@@ -8,9 +8,11 @@ public interface ReceiptService {
 
     void deleteReceipt();
 
-    Receipt getReceipt();
-
     boolean isReceiptAlreadyExist();
 
     void addProductToReceipt(Product product);
+
+    void setReceipt(Receipt receipt);
+
+    Receipt getReceipt();
 }

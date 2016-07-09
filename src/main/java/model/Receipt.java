@@ -12,7 +12,7 @@ public class Receipt {
     }
 
     public void addProduct(Product product) {
-        totalPrice = totalPrice.add(product.getPrice());
         products.add(product);
+        totalPrice = totalPrice.add(product.getPrice());
     }
 }
