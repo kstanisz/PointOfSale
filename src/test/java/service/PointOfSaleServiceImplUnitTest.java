@@ -33,9 +33,9 @@ public class PointOfSaleServiceImplUnitTest {
     private PointOfSaleService pointOfSaleService;
 
     private Product[] productsInDatabase = {
-            new Product("C001", "Computer", new BigDecimal(1199.99)),
-            new Product("T002", "Tablet", new BigDecimal(799.99)),
-            new Product("P003", "Phone", new BigDecimal(599.99)),
+            new Product("C001", "Computer", new BigDecimal("1199.99")),
+            new Product("T002", "Tablet", new BigDecimal("799.99")),
+            new Product("P003", "Phone", new BigDecimal("599.99")),
     };
 
     @Before
