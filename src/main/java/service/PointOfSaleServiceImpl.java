@@ -14,9 +14,9 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
     private ProductRepository productRepository;
     private ReceiptService receiptService;
 
-    private final String EXIT_MESSAGE = "exit";
-    private final String INVALID_BARCODE = "Invalid bar-code";
-    private final String PRODUCT_NOT_FOUNT = "Product not found";
+    public final static String EXIT_MESSAGE = "exit";
+    public final static String INVALID_BARCODE = "Invalid bar-code";
+    public final static String PRODUCT_NOT_FOUND = "Product not found";
 
     PointOfSaleServiceImpl(BarcodeScanner barcodeScanner, Display display, Printer printer, ProductRepository productRepository, ReceiptService receiptService) {
         this.barcodeScanner = barcodeScanner;
@@ -42,7 +42,7 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
             receiptService.addProductToReceipt(product);
             display.printProductNameAndPrice(product);
         } else
-            display.printMessage(PRODUCT_NOT_FOUNT);
+            display.printMessage(PRODUCT_NOT_FOUND);
     }
 
     @Override

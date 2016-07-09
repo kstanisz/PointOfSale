@@ -7,6 +7,15 @@ public class Product {
     private String name;
     private BigDecimal price;
 
+    public Product() {
+    }
+
+    public Product(String barcode, String name, BigDecimal price) {
+        this.barcode = barcode;
+        this.name = name;
+        this.price = price;
+    }
+
     public String getBarcode() {
         return barcode;
     }

@@ -32,21 +32,15 @@ public class PointOfSaleServiceImplUnitTest {
     private ReceiptService receiptService = new ReceiptServiceImpl();
     private PointOfSaleService pointOfSaleService;
 
-    private ArrayList<Product> productsInDatabase;
+    private Product[] productsInDatabase = {
+            new Product("C001", "Computer", new BigDecimal(1199.99)),
+            new Product("T002", "Tablet", new BigDecimal(799.99)),
+            new Product("P003", "Phone", new BigDecimal(599.99)),
+    };
 
     @Before
     public void setUpPointOfSaleService() {
         pointOfSaleService = new PointOfSaleServiceImpl(barcodeScanner, display, printer, productRepository, receiptService);
-    }
-
-    @Before
-    public void setUpBarcodeScannerMockConfiguration() {
-        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenAnswer(new Answer<String>() {
-            @Override
-            public String answer(InvocationOnMock invocationOnMock) throws Throwable {
-                return null;
-            }
-        });
     }
 
     @Before
@@ -66,15 +60,38 @@ public class PointOfSaleServiceImplUnitTest {
         Mockito.when(productRepository.findProductByBarcode(Matchers.anyString())).thenAnswer(new Answer<Product>() {
             @Override
             public Product answer(InvocationOnMock invocationOnMock) throws Throwable {
+                String barcode = (String) invocationOnMock.getArguments()[0];
+                for (Product product : productsInDatabase) {
+                    if (product.getBarcode().equals(barcode))
+                        return product;
+                }
                 return null;
             }
         });
     }
 
     @Test
-    public void testScanProduct() {
+    public void testScanProductWhenProductExist() {
+        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("C001");
         pointOfSaleService.scanProduct();
         Mockito.verify(barcodeScanner).scanProductAndGetBarcode();
+        Mockito.verify(display).printProductNameAndPrice(productsInDatabase[0]);
+    }
+
+    @Test
+    public void testScanProductWhenProductNotFound() {
+        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("T001");
+        pointOfSaleService.scanProduct();
+        Mockito.verify(barcodeScanner).scanProductAndGetBarcode();
+        Mockito.verify(display).printMessage(PointOfSaleServiceImpl.PRODUCT_NOT_FOUND);
+    }
+
+    @Test
+    public void testScanProductWhenEmptyBarcode() {
+        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("");
+        pointOfSaleService.scanProduct();
+        Mockito.verify(barcodeScanner).scanProductAndGetBarcode();
+        Mockito.verify(display).printMessage(PointOfSaleServiceImpl.INVALID_BARCODE);
     }
 
     @Test
