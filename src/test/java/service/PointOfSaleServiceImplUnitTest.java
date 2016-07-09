@@ -18,7 +18,6 @@ import org.mockito.stubbing.Answer;
 import repository.ProductRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PointOfSaleServiceImplUnitTest {
@@ -79,7 +78,7 @@ public class PointOfSaleServiceImplUnitTest {
         Mockito.verify(display).printProductNameAndPrice(productsInDatabase[0]);
 
         Receipt receipt= new Receipt();
-        receipt.addProduct(productsInDatabase[0]);
+        receipt.addProductAndUpdateTotalPrice(productsInDatabase[0]);
         Assert.assertEquals(receipt,receiptService.getReceipt());
     }
 

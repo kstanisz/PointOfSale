@@ -23,7 +23,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public void addProductToReceipt(Product product) {
-        receipt.addProduct(product);
+        receipt.addProductAndUpdateTotalPrice(product);
     }
 
     @Override

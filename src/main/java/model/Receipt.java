@@ -16,7 +16,7 @@ public class Receipt {
         return productList;
     }
 
-    public void addProduct(Product product) {
+    public void addProductAndUpdateTotalPrice(Product product) {
         productList.add(product);
         totalPrice = totalPrice.add(product.getPrice());
     }
