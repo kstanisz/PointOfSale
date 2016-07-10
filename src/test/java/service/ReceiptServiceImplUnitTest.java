@@ -9,7 +9,6 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 public class ReceiptServiceImplUnitTest {
-
     private ReceiptService receiptService;
 
     @Before
@@ -22,6 +21,11 @@ public class ReceiptServiceImplUnitTest {
         receiptService.setReceipt(null);
         receiptService.createNewReceiptIfNotExist();
         Assert.assertNotNull(receiptService.getReceipt());
+
+        Receipt expectedReceipt = new Receipt();
+        receiptService.setReceipt(expectedReceipt);
+        receiptService.createNewReceiptIfNotExist();
+        Assert.assertEquals(expectedReceipt, receiptService.getReceipt());
     }
 
     @Test

@@ -122,22 +122,22 @@ public class PointOfSaleServiceImplUnitTest {
         receiptService.setReceipt(expectedReceipt);
         pointOfSaleService.readInputMessage(PointOfSaleServiceImpl.EXIT_MESSAGE);
 
-        Mockito.verify(printer).printReceipt(expectedReceipt);
         Mockito.verify(display).printTotalPrice(expectedReceipt.getTotalPrice());
+        Mockito.verify(printer).printReceipt(expectedReceipt);
         Assert.assertNull(receiptService.getReceipt());
     }
 
     @Test
     public void testReadInputMessageWhenExitAndNullReceipt() {
         pointOfSaleService.readInputMessage(PointOfSaleServiceImpl.EXIT_MESSAGE);
-        Mockito.verify(printer, Mockito.never()).printReceipt(Matchers.any(Receipt.class));
         Mockito.verify(display, Mockito.never()).printTotalPrice(Matchers.any(BigDecimal.class));
+        Mockito.verify(printer, Mockito.never()).printReceipt(Matchers.any(Receipt.class));
     }
 
     @Test
     public void testReadInputMessageWhenNotExit() {
         pointOfSaleService.readInputMessage("not_exit");
-        Mockito.verify(printer, Mockito.never()).printReceipt(Matchers.any(Receipt.class));
         Mockito.verify(display, Mockito.never()).printTotalPrice(Matchers.any(BigDecimal.class));
+        Mockito.verify(printer, Mockito.never()).printReceipt(Matchers.any(Receipt.class));
     }
 }

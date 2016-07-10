@@ -54,8 +54,8 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
     private void printReceiptAndDisplayTotalPrice() {
         if (receiptService.isReceiptAlreadyExist()) {
             Receipt receipt = receiptService.getReceipt();
-            printer.printReceipt(receipt);
             display.printTotalPrice(receipt.getTotalPrice());
+            printer.printReceipt(receipt);
             receiptService.deleteReceipt();
         }
     }
