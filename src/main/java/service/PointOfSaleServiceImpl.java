@@ -47,10 +47,8 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
 
     @Override
     public void readInputMessage(String inputMessage) {
-        if (inputMessage.equals(EXIT_MESSAGE)) {
+        if (inputMessage.equals(EXIT_MESSAGE))
             printReceiptAndDisplayTotalPrice();
-            receiptService.deleteReceipt();
-        }
     }
 
     private void printReceiptAndDisplayTotalPrice() {
@@ -58,6 +56,7 @@ public class PointOfSaleServiceImpl implements PointOfSaleService {
             Receipt receipt = receiptService.getReceipt();
             printer.printReceipt(receipt);
             display.printTotalPrice(receipt.getTotalPrice());
+            receiptService.deleteReceipt();
         }
     }
 }
