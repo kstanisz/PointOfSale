@@ -76,9 +76,9 @@ public class PointOfSaleServiceImplUnitTest {
         pointOfSaleService.scanProduct();
 
         Mockito.verify(display).printProductNameAndPrice(productsInDatabase[0]);
-        Receipt receipt= new Receipt();
+        Receipt receipt = new Receipt();
         receipt.addProductAndUpdateTotalPrice(productsInDatabase[0]);
-        Assert.assertEquals(receipt,receiptService.getReceipt());
+        Assert.assertEquals(receipt, receiptService.getReceipt());
     }
 
     @Test
@@ -87,8 +87,8 @@ public class PointOfSaleServiceImplUnitTest {
         pointOfSaleService.scanProduct();
 
         Mockito.verify(display).printMessage(PointOfSaleServiceImpl.PRODUCT_NOT_FOUND);
-        Receipt receipt= new Receipt();
-        Assert.assertEquals(receipt,receiptService.getReceipt());
+        Receipt receipt = new Receipt();
+        Assert.assertEquals(receipt, receiptService.getReceipt());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class PointOfSaleServiceImplUnitTest {
     @Test
     public void testReadInputMessageWhenExitAndNotNullReceipt() {
         Receipt expectedReceipt = new Receipt();
-        for(Product product:productsInDatabase){
+        for (Product product : productsInDatabase) {
             expectedReceipt.addProductAndUpdateTotalPrice(product);
         }
 
@@ -112,17 +112,18 @@ public class PointOfSaleServiceImplUnitTest {
 
         Mockito.verify(printer).printReceipt(expectedReceipt);
         Mockito.verify(display).printTotalPrice(expectedReceipt.getTotalPrice());
+        Assert.assertNull(receiptService.getReceipt());
     }
 
     @Test
-    public void testReadInputMessageWhenExitAndNullReceipt(){
+    public void testReadInputMessageWhenExitAndNullReceipt() {
         pointOfSaleService.readInputMessage(PointOfSaleServiceImpl.EXIT_MESSAGE);
         Mockito.verify(printer, Mockito.never()).printReceipt(Matchers.any(Receipt.class));
         Mockito.verify(display, Mockito.never()).printTotalPrice(Matchers.any(BigDecimal.class));
     }
 
     @Test
-    public void testReadInputMessageWhenNotExit(){
+    public void testReadInputMessageWhenNotExit() {
         pointOfSaleService.readInputMessage("not_exit");
         Mockito.verify(printer, Mockito.never()).printReceipt(Matchers.any(Receipt.class));
         Mockito.verify(display, Mockito.never()).printTotalPrice(Matchers.any(BigDecimal.class));
