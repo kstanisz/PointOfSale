@@ -8,7 +8,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public void createNewReceiptIfNotExist() {
-        if(receipt==null)
+        if (receipt == null)
             receipt = new Receipt();
     }
 
