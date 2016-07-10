@@ -72,14 +72,14 @@ public class PointOfSaleServiceImplUnitTest {
 
     @Test
     public void testScanProductWhenProductExist() {
-        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn(productsInDatabase[0].getBarcode());
+        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn(productsInDatabase[1].getBarcode());
         Receipt expectedReceipt = new Receipt();
-        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[1]);
-        receiptService.setReceipt(expectedReceipt);
         expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[0]);
+        receiptService.setReceipt(expectedReceipt);
+        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[1]);
         pointOfSaleService.scanProduct();
 
-        Mockito.verify(display).printProductNameAndPrice(productsInDatabase[0]);
+        Mockito.verify(display).printProductNameAndPrice(productsInDatabase[1]);
         Assert.assertEquals(expectedReceipt, receiptService.getReceipt());
     }
 
@@ -87,7 +87,7 @@ public class PointOfSaleServiceImplUnitTest {
     public void testScanProductWhenProductNotFound() {
         Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("T001");
         Receipt expectedReceipt = new Receipt();
-        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[1]);
+        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[0]);
         receiptService.setReceipt(expectedReceipt);
         pointOfSaleService.scanProduct();
 
@@ -99,7 +99,7 @@ public class PointOfSaleServiceImplUnitTest {
     public void testScanProductWhenEmptyBarcode() {
         Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("");
         Receipt expectedReceipt = new Receipt();
-        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[1]);
+        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[0]);
         receiptService.setReceipt(expectedReceipt);
         pointOfSaleService.scanProduct();
 
