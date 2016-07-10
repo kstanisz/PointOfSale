@@ -29,7 +29,7 @@ public class PointOfSaleServiceImplUnitTest {
     private Printer printer;
     @Mock
     private ProductRepository productRepository;
-    private ReceiptService receiptService = new ReceiptServiceImpl();
+    private ReceiptService receiptService;
     private PointOfSaleService pointOfSaleService;
 
     private Product[] productsInDatabase = {
@@ -40,7 +40,12 @@ public class PointOfSaleServiceImplUnitTest {
 
     @Before
     public void setUpPointOfSaleService() {
-        pointOfSaleService = new PointOfSaleServiceImpl(barcodeScanner, display, printer, productRepository, receiptService);
+        this.pointOfSaleService = new PointOfSaleServiceImpl(barcodeScanner, display, printer, productRepository, receiptService);
+    }
+
+    @Before
+    public void setUpReceiptService() {
+        this.receiptService = new ReceiptServiceImpl();
     }
 
     @Before

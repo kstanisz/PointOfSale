@@ -50,6 +50,6 @@ public class ReceiptServiceImplUnitTest {
         receiptService.setReceipt(expectedReceipt);
         expectedReceipt.addProductAndUpdateTotalPrice(products[1]);
         receiptService.addProductToReceipt(products[1]);
-        Assert.assertEquals(expectedReceipt,receiptService.getReceipt());
+        Assert.assertEquals(expectedReceipt, receiptService.getReceipt());
     }
 }
