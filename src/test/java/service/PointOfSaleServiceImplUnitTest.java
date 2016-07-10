@@ -72,32 +72,39 @@ public class PointOfSaleServiceImplUnitTest {
 
     @Test
     public void testScanProductWhenProductExist() {
-        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("C001");
+        Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn(productsInDatabase[0].getBarcode());
+        Receipt expectedReceipt = new Receipt();
+        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[1]);
+        receiptService.setReceipt(expectedReceipt);
+        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[0]);
         pointOfSaleService.scanProduct();
 
         Mockito.verify(display).printProductNameAndPrice(productsInDatabase[0]);
-        Receipt receipt = new Receipt();
-        receipt.addProductAndUpdateTotalPrice(productsInDatabase[0]);
-        Assert.assertEquals(receipt, receiptService.getReceipt());
+        Assert.assertEquals(expectedReceipt, receiptService.getReceipt());
     }
 
     @Test
     public void testScanProductWhenProductNotFound() {
         Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("T001");
+        Receipt expectedReceipt = new Receipt();
+        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[1]);
+        receiptService.setReceipt(expectedReceipt);
         pointOfSaleService.scanProduct();
 
         Mockito.verify(display).printMessage(PointOfSaleServiceImpl.PRODUCT_NOT_FOUND);
-        Receipt receipt = new Receipt();
-        Assert.assertEquals(receipt, receiptService.getReceipt());
+        Assert.assertEquals(expectedReceipt, receiptService.getReceipt());
     }
 
     @Test
     public void testScanProductWhenEmptyBarcode() {
         Mockito.when(barcodeScanner.scanProductAndGetBarcode()).thenReturn("");
+        Receipt expectedReceipt = new Receipt();
+        expectedReceipt.addProductAndUpdateTotalPrice(productsInDatabase[1]);
+        receiptService.setReceipt(expectedReceipt);
         pointOfSaleService.scanProduct();
 
         Mockito.verify(display).printMessage(PointOfSaleServiceImpl.INVALID_BARCODE);
-        Assert.assertNull(receiptService.getReceipt());
+        Assert.assertEquals(expectedReceipt, receiptService.getReceipt());
     }
 
     @Test
